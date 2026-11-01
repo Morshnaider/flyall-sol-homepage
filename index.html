@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>FlyAll · סרטון סול בעמוד הבית</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: the live FlyAll homepage, top to bottom, with two Sol-video touchpoints (hero pill → story player, Sol section → inline phone player). Single light look, like the site. */
+:root{
+  --blue:#1B5ECE; --purple:#824AEA; --pink:#F63DE4;
+  --text:#0E1B3D; --muted:#5B6584; --line:#E4E6F0; --surface:#FFFFFF; --page:#F6F7FB;
+  --note:#FFF4C2; --note-ink:#5A4300;
+  --grad:linear-gradient(90deg,#1B5ECE 0%,#824AEA 50.48%,#F63DE4 100%);
+  --grad-soft:linear-gradient(90deg,rgba(27,94,206,.12) 0%,rgba(130,74,234,.12) 50%,rgba(246,61,228,.12) 100%);
+  --font:"IBM Plex Sans Hebrew",Arial,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+[hidden]{display:none!important}
+html,body{direction:rtl;background:var(--page);color:var(--text)}
+body{margin:0}
+body{font-family:var(--font);font-size:16px;line-height:1.45}
+*{box-sizing:border-box}
+button{font-family:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid var(--text);outline-offset:2px}
+.wrap{max-width:1440px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media(min-width:1000px){.wrap{padding-left:max(140px,env(safe-area-inset-left,0px));padding-right:max(140px,env(safe-area-inset-right,0px))}}
+
+
+/* header: full-width white bar, Sol crystal in a notch under the logo (as on flyall.co.il) */
+.site-head{position:absolute;inset:0 0 auto 0;z-index:5}
+.head-row{position:relative;display:flex;align-items:center;justify-content:space-between;height:76px;background:#fff;border-radius:0 0 16px 16px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+@media(min-width:1000px){.head-row{padding-inline:max(140px,env(safe-area-inset-left,0px))}}
+.logo{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:30px;letter-spacing:-.5px;color:var(--purple);direction:ltr}
+.logo img{width:34px;height:34px}
+.logo span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.head-link{display:flex;gap:8px;align-items:center;font-size:15px;color:var(--text);background:none;border:0}
+.burger{width:26px;height:20px;background:none;border:0;display:flex;flex-direction:column;justify-content:space-between;padding:0}
+.burger span{display:block;height:2px;background:var(--blue);border-radius:2px}
+.notch{position:absolute;left:50%;top:calc(100% - 1px);transform:translateX(-50%);width:96px;height:52px;background:#fff;border-radius:0 0 48px 48px;display:flex;justify-content:center;align-items:flex-start;padding-top:4px}
+.notch::before,.notch::after{content:"";position:absolute;top:0;width:24px;height:24px;background:radial-gradient(circle at var(--cx) 100%,transparent 23.5px,#fff 24px)}
+.notch::before{right:100%;--cx:0%}
+.notch::after{left:100%;--cx:100%}
+.crystal{width:44px;height:44px;border-radius:50%;border:0;padding:0;background:#fff url("flyai-logo.png") center/40px no-repeat;box-shadow:0 0 18px rgba(130,74,234,.45);transition:transform .2s}
+.crystal:hover{transform:scale(1.06)}
+
+/* hero */
+.hero{position:relative;height:540px;background:url("hero-bg-1920.webp") center 60%/cover no-repeat}
+.hero-inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;padding-top:200px;text-align:center}
+.hero h1{margin:0;font-size:clamp(40px,6vw,72px);line-height:1.1;font-weight:700;color:var(--blue);text-wrap:balance}
+
+/* search widget */
+.search{position:relative;z-index:3;margin-top:-176px}
+.tabs{display:flex;gap:12px;justify-content:flex-start;margin-bottom:-4px;padding-inline:24px;flex-wrap:wrap}
+.tab{position:relative;display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.4);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid transparent;border-radius:100px;height:60px;padding:0 24px;font-size:19px;color:var(--text)}
+.tab svg{width:26px;height:26px;flex:none}
+.tab.on{background:#fff;font-weight:600}
+.tab.on::after{content:"";position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);border:10px solid transparent;border-top-color:#fff}
+.panel{margin-top:22px;background:#fff;border-radius:24px;box-shadow:0 10px 30px rgba(14,27,61,.1);padding:24px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:12px}
+.field{display:flex;align-items:center;gap:8px;height:56px;background:#FDFDFD;border:1px solid #E3F2FF;border-radius:10px;padding:0 14px;color:var(--text);font-size:16px;min-width:0;white-space:nowrap;overflow:hidden}
+.field.dest{color:var(--muted)}
+.field svg{width:18px;height:18px;flex:none;stroke:var(--blue);fill:none;stroke-width:1.8}
+.cta-search{grid-column:1/-1;justify-self:center;margin-top:12px;border:0;background:var(--grad);color:#fff;font-weight:600;font-size:22px;border-radius:100px;height:52px;width:min(100%,394px)}
+@media(max-width:820px){.hero{height:460px}.hero-inner{padding-top:186px}.search{margin-top:-110px}.panel{grid-template-columns:1fr 1fr;padding:16px}.field.dest,.field.guests{grid-column:1/-1}.tabs{gap:8px;padding-inline:0;justify-content:center}.tab{height:46px;padding:0 14px;font-size:15px;gap:6px}.tab svg{width:20px;height:20px}}
+
+@media(max-width:1000px){.panel{grid-template-columns:1fr 1fr}.field.dest,.field.guests{grid-column:1/-1}}
+
+@media(max-width:480px){.logo{font-size:24px}.logo img{width:28px;height:28px}}
+
+/* Sol strip: the search card's own footer, an alternative way to search */
+.sol-strip{grid-column:1/-1;margin:12px -24px -24px;padding:14px 24px;border-radius:0 0 24px 24px;background:var(--grad-soft);display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;text-align:center}
+.sol-strip img{width:28px;height:28px}
+.sol-strip p{margin:0;font-size:16px}
+.sol-strip a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:17px;font-weight:700;white-space:nowrap}
+.sol-strip a .lbl{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;border-bottom:2px solid rgba(130,74,234,.35);padding-bottom:1px}
+.sol-strip a:hover .lbl{border-bottom-color:var(--purple)}
+.sol-strip a .go{width:24px;height:24px;border-radius:50%;background:var(--grad);display:grid;place-items:center;flex:none}
+.sol-strip a svg{width:14px;height:14px;fill:#fff;animation:nudge 1.8s ease-in-out infinite}
+@media(max-width:820px){.sol-strip{margin:12px -16px -16px;padding:12px 16px}}
+
+@keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+.tabs{flex-wrap:nowrap}.tab{white-space:nowrap;flex:none}
+@media(max-width:1300px){.tab{height:54px;padding:0 18px;font-size:17px}.tab svg{width:22px;height:22px}}
+@media(max-width:1000px){.tabs{flex-wrap:nowrap;justify-content:center;gap:8px}.tab{height:50px;padding:0 14px;font-size:16px;gap:6px}.tab svg{width:20px;height:20px}}
+@media(max-width:480px){.tabs{gap:6px}.tab{height:42px;padding:0 12px;font-size:14px}.tab svg{width:18px;height:18px}}
+.sol.arrived{box-shadow:0 0 0 3px rgba(130,74,234,.55),0 0 50px rgba(130,74,234,.35)}
+
+/* Sol panel: drops from the top, like the live site */
+.sol-backdrop{position:fixed;inset:0;z-index:70;background:rgba(14,27,61,.35);opacity:0;pointer-events:none;transition:opacity .35s}
+.sol-panel{position:fixed;z-index:75;inset:0 0 auto 0;height:min(92vh,780px);background:#fff;border-radius:0 0 32px 32px;box-shadow:0 20px 60px rgba(14,27,61,.25);transform:translateY(-105%);transition:transform .5s cubic-bezier(.2,.8,.2,1),visibility 0s linear .5s;display:flex;flex-direction:column;visibility:hidden}
+.sol-open .sol-backdrop{opacity:1;pointer-events:auto}
+.sol-open .sol-panel{transform:none;visibility:visible;transition-delay:0s}
+.sol-panel .notch{background:#fff;top:calc(100% - 1px)}
+.sp-head{display:flex;align-items:center;justify-content:space-between;height:64px;padding-top:env(safe-area-inset-top,0px);flex:none}
+.sp-close{background:none;border:0;width:36px;height:36px;display:grid;place-items:center}
+.sp-close svg{width:22px;height:22px;fill:var(--blue)}
+.sp-body{flex:1;overflow-y:auto;min-height:0}
+.sp-inner{max-width:760px;margin-inline:auto;padding:16px 16px 8px;display:flex;flex-direction:column;gap:14px;min-height:100%}
+.sp-empty{margin:auto;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.sp-empty img{width:44px;height:44px}
+.sp-empty b{font-size:22px}
+.sp-empty span{color:var(--muted)}
+.msg{display:flex;gap:8px;align-items:flex-end;max-width:88%}
+.msg.me{align-self:flex-start}
+.msg.ai{align-self:flex-end;flex-direction:row-reverse}
+.avatar{width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:12px;font-weight:600;color:#fff;background:var(--blue)}
+.msg.ai .avatar{background:none}
+.msg.ai .avatar img{width:28px;height:28px}
+.bub{padding:10px 14px;border-radius:18px;font-size:15px;line-height:1.45;background:#fff;border:1px solid var(--line);box-shadow:0 2px 8px rgba(14,27,61,.06)}
+.msg.ai .bub{border:1.5px solid var(--purple)}
+.typing{display:inline-flex;gap:4px}
+.typing i{width:7px;height:7px;border-radius:50%;background:var(--purple);opacity:.4;animation:blink 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes blink{50%{opacity:1}}
+.results{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-self:stretch}
+.res{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(14,27,61,.1);display:flex;flex-direction:column;min-width:0;animation:pop .4s both}
+.res:nth-child(2){animation-delay:.12s}.res:nth-child(3){animation-delay:.24s}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}}
+.res .ph{position:relative;aspect-ratio:5/3;background-size:cover;background-position:center}
+.res .tag{position:absolute;top:8px;right:8px;background:var(--purple);color:#fff;font-size:12px;font-weight:600;border-radius:100px;padding:2px 10px}
+.res .rt{padding:10px;text-align:center;display:flex;flex-direction:column;gap:4px}
+.res b{font-size:15px;line-height:1.25}
+.res span{font-size:12px;color:var(--muted)}
+.sp-foot{flex:none;padding:8px 16px 28px}
+.sp-form{max-width:760px;margin-inline:auto;display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:100px;padding:8px 8px 8px 8px;padding-inline-start:18px;box-shadow:0 4px 18px rgba(130,74,234,.12)}
+.sp-form svg.spark{width:20px;height:20px;flex:none}
+.sp-form input{flex:1;min-width:0;border:0;outline:0;font:inherit;font-size:16px;color:var(--text);background:transparent}
+.sp-send{width:38px;height:38px;border-radius:50%;border:0;background:var(--grad);display:grid;place-items:center;flex:none;opacity:.45}
+.sp-send.ready{opacity:1}
+.sp-send svg{width:16px;height:16px;fill:#fff;transform:scaleX(-1)}
+.sp-disc{max-width:760px;margin:6px auto 0;text-align:center;font-size:12px;color:var(--muted)}
+@media(max-width:600px){.sol-panel{height:100%;border-radius:0}.sol-panel .notch{display:none}.results{grid-template-columns:repeat(3,minmax(120px,1fr));overflow-x:auto}}
+@media(prefers-reduced-motion:reduce){.sol-panel{transition:none}}
+/* generic sections */
+main{display:flex;flex-direction:column;gap:56px;padding-block:44px 56px}
+h2{font-size:clamp(24px,3vw,34px);line-height:1.25;margin:0 0 18px;font-weight:700;text-wrap:balance}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.trust{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.trust div{background:#fff;border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.trust b{font-size:16px}.trust span{font-size:14px;color:var(--muted)}
+@media(max-width:820px){.trust{grid-template-columns:1fr 1fr}}
+
+.card-promo{border-radius:32px;background:linear-gradient(120deg,#0F1D4A,#2B2272 60%,#4A1C6B);color:#fff;padding:32px;display:flex;gap:24px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.card-promo h2{color:#fff;margin-bottom:8px}
+.card-promo ul{margin:0;padding-inline-start:18px;display:flex;flex-direction:column;gap:4px;font-size:15px;opacity:.9}
+.cc{width:220px;aspect-ratio:1.586;max-width:100%;border-radius:16px;background:linear-gradient(135deg,#222 0,#444 60%,#222);box-shadow:0 14px 30px rgba(0,0,0,.4);position:relative}
+.cc::after{content:"FlyAll · CAL";position:absolute;bottom:14px;left:16px;font-size:13px;letter-spacing:.06em;opacity:.8;direction:ltr}
+.btn-light{background:#fff;color:var(--blue);border:0;border-radius:100px;padding:11px 26px;font-weight:600;font-size:16px}
+
+.deals{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.deal{background:#fff;border-radius:22px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.deal .img{aspect-ratio:4/3;background:var(--grad-soft)}
+.deal .img.a{background:linear-gradient(160deg,#2C3E7A,#8B5CF6 70%,#F472B6)}
+.deal .img.b{background:linear-gradient(160deg,#0EA5E9,#1B5ECE)}
+.deal .img.c{background:linear-gradient(160deg,#5B21B6,#1E3A8A)}
+.deal .img.d{background:linear-gradient(160deg,#B91C1C,#F59E0B)}
+.deal div.t{padding:14px 16px 18px;display:flex;flex-direction:column;gap:6px}
+.deal b{font-size:17px}.deal span{font-size:14px;color:var(--muted)}
+@media(max-width:1000px){.deals{grid-template-columns:1fr 1fr}}
+
+/* touchpoint 2: Sol section */
+.sol{position:relative;border-radius:56px;background:#fff;overflow:hidden}
+.sol::before{content:"";position:absolute;inset:0;background:var(--grad-soft)}
+.sol-grid{position:relative;display:grid;grid-template-columns:1fr auto;gap:64px;align-items:center;padding:48px 72px}
+.sol-copy{display:flex;flex-direction:column;align-items:flex-start;gap:16px;min-width:0}
+.sol-copy h2{margin:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sol-copy h2 img{width:42px;height:42px}
+.sol-copy p{margin:0;font-size:18px}
+.prompts{display:flex;flex-wrap:wrap;gap:8px}
+.prompt{border:1px solid rgba(130,74,234,.35);background:#fff;color:var(--text);border-radius:100px;padding:8px 14px;font-size:14px;white-space:nowrap}
+.prompt:hover{border-color:var(--purple)}
+.cta-sol{display:inline-flex;align-items:center;gap:8px;border:0;background:var(--blue);color:#fff;border-radius:100px;padding:13px 30px;font-weight:700;font-size:18px}
+.cta-sol:hover{background:#1e5cb3}
+.cta-sol svg{width:20px;height:20px}
+
+.phone{position:relative;width:300px;max-width:100%;aspect-ratio:9/16;border-radius:38px;padding:8px;background:#0E1222;box-shadow:0 30px 60px rgba(14,27,61,.25),0 0 0 1px rgba(255,255,255,.4) inset}
+.screen{position:relative;width:100%;height:100%;border-radius:30px;overflow:hidden;background:#000}
+.screen video{width:100%;height:100%;object-fit:cover;display:block}
+.v-ctrls{position:absolute;inset:auto 0 0 0;padding:10px 12px 12px;display:flex;align-items:center;gap:8px;background:linear-gradient(0deg,rgba(0,0,0,.55),transparent)}
+.icon-btn{width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.92);display:grid;place-items:center;flex:none}
+.icon-btn svg{width:18px;height:18px;fill:var(--text)}
+.bar{flex:1;height:3px;border-radius:3px;background:rgba(255,255,255,.35);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:#fff}
+.sound-hint{position:absolute;top:12px;right:12px;left:auto;background:rgba(0,0,0,.55);color:#fff;font-size:12px;border-radius:100px;padding:5px 10px;border:0;display:flex;gap:6px;align-items:center}
+.expand{position:absolute;top:12px;left:12px}
+.endcard{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;text-align:center;background:radial-gradient(circle at 50% 45%,rgba(60,30,120,.82),rgba(10,12,28,.94) 75%);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);color:#fff}
+.endcard b{font-size:20px;line-height:1.3}
+.endcard .cta-sol{font-size:16px;padding:11px 22px}
+.link-btn{background:none;border:0;color:#fff;text-decoration:underline;font-size:14px}
+
+@media(max-width:1200px){.sol-grid{padding:40px;gap:40px}}
+@media(max-width:900px){
+  .sol{border-radius:0;margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)))}
+  .sol-grid{grid-template-columns:1fr;gap:24px;padding:32px max(18px,env(safe-area-inset-right,0px))}
+  .sol-copy{display:contents}
+  .sol-copy h2{order:1}.sol-copy p{order:2}.phone{width:min(100%,260px)}.prompts{order:4;justify-content:center}.cta-sol{order:5;justify-self:center}
+}
+
+
+/* wow layer: drifting aurora, glowing floating phone, chat cards orbiting it, shining CTA */
+.sol{background:#FBFAFF;min-height:620px}
+.sol::before{background:var(--grad-soft);z-index:0}
+.aurora{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.aurora i{position:absolute;border-radius:50%;filter:blur(60px);opacity:.55;animation:drift 18s ease-in-out infinite alternate}
+.aurora i:nth-child(1){width:420px;height:420px;background:#8FB3FF;left:-80px;top:-120px}
+.aurora i:nth-child(2){width:380px;height:380px;background:#D7A8FF;left:22%;bottom:-160px;animation-duration:22s;animation-delay:-6s}
+.aurora i:nth-child(3){width:320px;height:320px;background:#FFB3EE;right:-60px;top:20%;animation-duration:26s;animation-delay:-12s}
+@keyframes drift{to{transform:translate(60px,-40px) scale(1.15)}}
+.sol-grid{z-index:1;padding:64px 88px}
+.sol-copy h2{font-size:clamp(30px,3.6vw,46px);line-height:1.15}
+.sol-copy h2 .grad-text{font-size:1.15em}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14px;color:var(--purple);background:rgba(255,255,255,.7);border:1px solid rgba(130,74,234,.25);border-radius:100px;padding:6px 12px}
+.eyebrow .live{width:8px;height:8px;border-radius:50%;background:var(--pink);box-shadow:0 0 0 0 rgba(246,61,228,.6);animation:ping 1.8s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 8px rgba(246,61,228,0)}100%{box-shadow:0 0 0 0 rgba(246,61,228,0)}}
+.prompt{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.8);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:transform .15s,box-shadow .15s}
+.prompt:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(130,74,234,.2)}
+.prompt::before{content:"✦";color:var(--purple);font-size:12px}
+.sol-copy > .cta-sol{position:relative;overflow:hidden;background:var(--grad);box-shadow:0 10px 28px rgba(130,74,234,.4);transition:transform .15s,box-shadow .15s}
+.sol-copy > .cta-sol:hover{background:var(--grad);transform:translateY(-2px);box-shadow:0 14px 34px rgba(130,74,234,.5)}
+.sol-copy > .cta-sol::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:shine 3.6s ease-in-out infinite}
+@keyframes shine{0%,55%{left:-60%}100%{left:130%}}
+.stage{position:relative;padding:20px 70px}
+.stage::before{content:"";position:absolute;inset:8% 14%;border-radius:50%;background:radial-gradient(circle,rgba(130,74,234,.55),rgba(246,61,228,.25) 45%,transparent 70%);filter:blur(30px);animation:pulse 5s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.08);opacity:.8}}
+.stage .phone{animation:float 6s ease-in-out infinite;transform-origin:center}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-12px) rotate(-1deg)}}
+.chip-card{position:absolute;z-index:2;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:18px;box-shadow:0 14px 34px rgba(14,27,61,.16);font-size:13px;line-height:1.35;animation:bob 5s ease-in-out infinite}
+.chip-card.q{top:70px;right:-10px;padding:10px 12px;display:flex;gap:8px;align-items:center;max-width:210px;border:1px solid var(--line)}
+.chip-card.q .av{width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;flex:none}
+.chip-card.a{bottom:90px;left:-14px;width:170px;overflow:hidden;animation-delay:-2.5s}
+.chip-card.a::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;background:var(--grad);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.chip-card.a .ph{height:78px;background:url("h-astarte.jpg") center/cover;position:relative}
+.chip-card.a .ph span{position:absolute;top:6px;right:6px;background:var(--purple);color:#fff;font-size:11px;font-weight:600;border-radius:100px;padding:1px 8px}
+.chip-card.a .t{padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.chip-card.a .t small{color:var(--muted)}
+.chip-card.s{top:200px;left:-30px;padding:8px 12px;display:flex;gap:6px;align-items:center;font-weight:600;color:var(--purple);animation-delay:-1.2s}
+.chip-card.s img{width:22px;height:22px}
+@keyframes bob{50%{transform:translateY(-8px)}}
+.chip-card{transition:opacity .4s}
+.stage.done .chip-card{opacity:0;pointer-events:none}
+.endcard{gap:14px;padding:24px}
+.endcard img{width:52px;height:52px}
+.endcard b{font-size:22px}
+.endcard .cta-sol{background:var(--grad)}
+@media(max-width:900px){.sol-grid{padding:36px max(18px,env(safe-area-inset-right,0px))}.stage{order:3;justify-self:center;padding:16px 40px}.eyebrow{order:0;justify-self:center}.chip-card.q{right:-6px;top:40px;max-width:170px}.chip-card.a{left:-6px;bottom:60px;width:140px}.chip-card.a .ph{height:60px}.chip-card.s{display:none}}
+@media(prefers-reduced-motion:reduce){.aurora i,.stage::before,.stage .phone,.chip-card,.cta-sol::after,.eyebrow .live{animation:none!important}}
+
+
+/* centered layout: copy on top, phone in the middle, prompts and CTA below */
+.sol-grid{grid-template-columns:1fr;justify-items:center;gap:18px;text-align:center;padding-block:44px}
+.sol-copy h2{margin-bottom:-6px}
+.stage .phone{width:270px}
+.sol-copy{display:contents}
+.sol-copy h2{order:1;justify-content:center}
+.sol-copy p{order:2;text-align:center}
+.stage{order:3;justify-self:center;padding:8px 120px}
+.prompts{order:4;justify-content:center}
+.sol-copy > .cta-sol{order:5;justify-self:center}
+.chip-card.q{top:150px;right:-10px;left:auto;max-width:220px}
+.chip-card.s{top:auto;bottom:150px;left:-10px}
+@media(max-width:900px){.stage{padding:16px 44px}.chip-card.q{top:90px;right:-8px;max-width:170px}}
+
+/* FAQ + footer */
+.faq details{background:#fff;border-radius:16px;padding:14px 18px;margin-bottom:8px}
+.faq summary{cursor:pointer;font-weight:500}
+.faq p{margin:8px 0 0;color:var(--muted)}
+footer{background:#0E1B3D;color:#C9D0E6;font-size:14px}
+footer .wrap{padding-block:32px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* story modal */
+.modal{position:fixed;inset:0;z-index:80;background:rgba(8,10,20,.88);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.story{position:relative;height:min(88vh,820px);aspect-ratio:9/16;max-width:100%;border-radius:24px;overflow:hidden;background:#000}
+.story video{width:100%;height:100%;object-fit:cover;display:block}
+.story-top{position:absolute;inset:0 0 auto 0;padding:12px;display:flex;flex-direction:column;gap:10px;background:linear-gradient(180deg,rgba(0,0,0,.5),transparent)}
+.story-top .bar{flex:none}
+.story-top .row{display:flex;justify-content:space-between;align-items:center;color:#fff;font-size:14px}
+.story-top .who{display:flex;align-items:center;gap:8px}
+.story-top .who img{width:28px;height:28px}
+.story-cta{position:absolute;inset:auto 12px 14px 12px;display:flex;justify-content:center}
+@media(max-width:600px){.modal{padding:0}.story{height:100%;width:100%;aspect-ratio:auto;border-radius:0}}
+
+
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div dir="rtl" id="root">
+
+<header class="site-head">
+  <div class="head-row">
+    <button class="head-link" aria-label="אזור אישי"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1B5ECE" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>אזור אישי</button>
+    <span class="logo"><img src="flyai-logo.png" alt=""><span>FlyAll</span></span>
+    <button class="burger" aria-label="פתיחת תפריט"><span></span><span></span><span></span></button>
+    <div class="notch"><button class="crystal" data-q="" aria-label="פתח צ'אט עם סול AI"></button></div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner wrap">
+    <h1>כל התיירות שבעולם!</h1>
+  </div>
+</section>
+
+<div class="search wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab on" role="tab" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="#1B5ECE" stroke-width="1.6"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1M11 21v-3h2v3"/></svg>מלונות בחו״ל</button>
+    <button class="tab" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="#1B5ECE" stroke-width="1.6"><path d="M2 13l4 1 4-3-6-5 2-1 8 4 4-2c1.5-.7 3 .2 2.5 1.5L19 11l-9 6-5 .5z"/></svg>טיסות</button>
+    <button class="tab" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="#1B5ECE" stroke-width="1.6"><path d="M3 8h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4z"/><path d="M14 8v10" stroke-dasharray="2 2"/></svg>חבילות חוויה</button>
+  </div>
+  <div class="panel">
+    <div class="field dest"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>בחירת יעד/אזור או מלון בחו״ל</div>
+    <div class="field"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>צ׳ק אין</div>
+    <div class="field"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>צ׳ק אאוט</div>
+    <div class="field guests"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c2 .8 3.2 2.6 3.5 5.2"/></svg><b>2 אורחים, 1 חדרים</b></div>
+    <button class="cta-search">חיפוש מלון בחו״ל</button>
+    <div class="sol-strip">
+      <img src="flyai-logo.png" alt="">
+      <p>מעדיפים לספר במילים שלכם מה אתם מחפשים? סול, סוכנת ה-AI שלנו, תמצא לכם.</p>
+      <a href="#sol" id="toSol"><span class="lbl">הכירו את סול</span><span class="go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M11 4h2v12l5-5 1.4 1.4L12 19.8l-7.4-7.4L6 11l5 5z"/></svg></span></a>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="trust" aria-label="למה FlyAll">
+    <div><b>קונים בזול יותר מ-Booking</b><span>המחירים אצלנו נמוכים יותר בהתחייבות</span></div>
+    <div><b>לא מפספסים הזדמנות לטייל</b><span>סוגרים היום ומשלמים כשנוח בעסקת תשלומים</span></div>
+    <div><b>שירות לקוחות בעברית</b><span>זמינים לכל שאלה</span></div>
+    <div><b>רק לקוחות FlyAll</b><span>הטבות בלעדיות למחזיקי הכרטיס</span></div>
+  </section>
+
+  <section class="card-promo" aria-label="כרטיס FlyAll">
+    <div>
+      <h2>הכרטיס שנותן כסף חזרה לטיסות חינם בכל חברות התעופה</h2>
+      <ul>
+        <li>150$ מתנה, בכפוף לרכישות בכרטיס</li>
+        <li>פטור מדמי כרטיס בשנה הראשונה</li>
+        <li>מימוש לטיסות בכל חברות התעופה ומלונות בכל העולם</li>
+      </ul>
+    </div>
+    <div class="cc" aria-hidden="true"></div>
+    <button class="btn-light">טוסו להזמין</button>
+  </section>
+
+  <section aria-label="מבצעים">
+    <h2>המבצעים הכי חמים של החודש</h2>
+    <div class="deals">
+      <article class="deal"><div class="img a"></div><div class="t"><b>חבילות חוויה</b><span>הופעות, משחקים, סקי ועוד</span></div></article>
+      <article class="deal"><div class="img b"></div><div class="t"><b>טיסות ב-999$</b><span>בנגקוק וניו-יורק</span></div></article>
+      <article class="deal"><div class="img c"></div><div class="t"><b>טסים עם אייר חיפה</b><span>רוכשים קרדיט בנקודות</span></div></article>
+      <article class="deal"><div class="img d"></div><div class="t"><b>שווקי כריסמס 2026</b><span>בכסף שכבר צברתם</span></div></article>
+    </div>
+  </section>
+
+  <section class="sol" id="sol" aria-labelledby="sol-title">
+    <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="sol-grid">
+      <div class="sol-copy">
+        <h2 id="sol-title"><span style="white-space:nowrap">הכירו את <span class="grad-text">סול</span>,</span> סוכנת ה-AI של <bdi>FlyAll</bdi> <img src="flyai-logo.png" alt=""></h2>
+        <p>שאלו, קבלו המלצות מותאמות אישית והתחילו לתכנן את החופשה המושלמת.</p>
+        <div class="prompts" aria-label="שאלות לדוגמה">
+          <button class="prompt" data-q="מחפשים חופשה זוגית ביוון באוגוסט, מלון מפנק עם נוף לים">חופשה זוגית ביוון באוגוסט</button>
+          <button class="prompt" data-q="סופ״ש בשווקי כריסמס בווינה">סופ״ש בשווקי כריסמס</button>
+          <button class="prompt" data-q="מלון משפחתי ליד הים בכרתים">מלון משפחתי ליד הים</button>
+        </div>
+        <button class="cta-sol" data-q=""><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6zM19 14l.9 2.6L22 17.5l-2.1.9L19 21l-.9-2.6-2.1-.9 2.1-.9z"/></svg>לשיחה עם סול AI</button>
+      </div>
+
+      <div class="stage">
+      <div class="chip-card q" aria-hidden="true"><span class="av">AG</span>מחפשים חופשה זוגית ביוון באוגוסט</div>
+      <div class="chip-card s" aria-hidden="true"><img src="flyai-logo.png" alt="">מצאתי 3 אפשרויות</div>
+      <div class="phone">
+        <div class="screen">
+          <video id="inlineVid" src="sol.mp4" poster="sol-poster.jpg" muted playsinline preload="metadata" aria-label="סרטון: סול מתכננת חופשה ביוון"></video>
+          <button class="sound-hint" id="inlineSound" aria-label="הפעלת סאונד">🔇 הפעלת סאונד</button>
+          <button class="icon-btn expand" id="inlineExpand" aria-label="מסך מלא"><svg viewBox="0 0 24 24"><path d="M4 10V4h6v2H6v4zm10-6h6v6h-2V6h-4zM4 14h2v4h4v2H4zm14 4v-4h2v6h-6v-2z"/></svg></button>
+          <div class="v-ctrls">
+            <button class="icon-btn" id="inlinePlay" aria-label="הפעלה"><svg viewBox="0 0 24 24" id="inlinePlayIcon"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="bar" aria-hidden="true"><i id="inlineBar"></i></div>
+          </div>
+          <div class="endcard" id="inlineEnd" hidden>
+            <img src="flyai-logo.png" alt="" width="44" height="44">
+            <b>רוצים לתכנן ככה גם?</b>
+            <button class="cta-sol" data-q="">לשיחה עם סול AI</button>
+            <button class="link-btn" id="inlineReplay">צפייה חוזרת</button>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" aria-label="שאלות נפוצות">
+    <h2>שאלות נפוצות</h2>
+    <details><summary>מי זו סול סוכנת ה-AI?</summary><p>סול היא סוכנת ה-AI של FlyAll שעוזרת למצוא מלונות, טיסות וחוויות לפי מה שמבקשים במילים שלכם.</p></details>
+    <details><summary>מה אפשר לבקש מסוכנת ה-AI?</summary><p>המלצות על יעדים, מלונות לפי סגנון ותקציב, ורעיונות לחופשה.</p></details>
+    <details><summary>האם אני חייב להשתמש בסוכנת ה-AI כדי לבצע הזמנה?</summary><p>לא. אפשר תמיד לחפש ולהזמין דרך החיפוש הרגיל.</p></details>
+  </section>
+</main>
+
+<footer><div class="wrap"><span class="logo" style="font-size:22px"><span>FlyAll</span></span><span>כל הזכויות שמורות ל-FlyAll · פרוטוטייפ להמחשה בלבד</span></div></footer>
+
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-label="סרטון סול" dir="rtl">
+  <div class="story">
+    <video id="storyVid" src="sol.mp4" poster="sol-poster.jpg" playsinline preload="none"></video>
+    <div class="story-top">
+      <div class="bar"><i id="storyBar"></i></div>
+      <div class="row">
+        <span class="who"><img src="flyai-logo.png" alt="">סול · FlyAll</span>
+        <span style="display:flex;gap:8px">
+          <button class="icon-btn" id="storyMute" aria-label="השתקה"><svg viewBox="0 0 24 24" id="storyMuteIcon"><path d="M3 9v6h4l5 5V4L7 9zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+          <button class="icon-btn" id="storyClose" aria-label="סגירה"><svg viewBox="0 0 24 24"><path d="M18.3 5.7 12 12l6.3 6.3-1.4 1.4L10.6 13.4 4.3 19.7 2.9 18.3 9.2 12 2.9 5.7 4.3 4.3l6.3 6.3 6.3-6.3z"/></svg></button>
+        </span>
+      </div>
+    </div>
+    <div class="story-cta"><button class="cta-sol" data-q="">לשיחה עם סול AI</button></div>
+  </div>
+</div>
+
+<div class="sol-backdrop" id="solBackdrop"></div>
+<div class="sol-panel" id="solPanel" role="dialog" aria-modal="true" aria-label="צ'אט עם סול" aria-hidden="true">
+  <div class="wrap" style="width:100%">
+    <div class="sp-head">
+      <button class="head-link" tabindex="-1"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B5ECE" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>אזור אישי</button>
+      <span class="logo"><img src="flyai-logo.png" alt=""><span>FlyAll</span></span>
+      <button class="sp-close" id="solClose" aria-label="סגירת הצ'אט"><svg viewBox="0 0 24 24"><path d="M18.3 5.7 12 12l6.3 6.3-1.4 1.4L10.6 13.4 4.3 19.7 2.9 18.3 9.2 12 2.9 5.7 4.3 4.3l6.3 6.3 6.3-6.3z"/></svg></button>
+    </div>
+  </div>
+  <div class="sp-body" id="spBody"><div class="sp-inner" id="spInner"></div></div>
+  <div class="sp-foot">
+    <form class="sp-form" id="spForm">
+      <svg class="spark" viewBox="0 0 24 24"><defs><linearGradient id="sg" x1="0" x2="1"><stop offset="0" stop-color="#1B5ECE"/><stop offset=".5" stop-color="#824AEA"/><stop offset="1" stop-color="#F63DE4"/></linearGradient></defs><path fill="url(#sg)" d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6zM19 14l.9 2.6L22 17.5l-2.1.9L19 21l-.9-2.6-2.1-.9 2.1-.9z"/></svg>
+      <input id="spInput" type="text" placeholder="לשאול את סול" autocomplete="off" aria-label="הודעה לסול">
+      <button class="sp-send" id="spSend" type="submit" aria-label="שליחה"><svg viewBox="0 0 24 24"><path d="M3 20l18-8L3 4v6l12 2-12 2z"/></svg></button>
+    </form>
+    <p class="sp-disc">סול היא סוכנת AI ועלולה לטעות. מומלץ לבדוק מידע חשוב.</p>
+  </div>
+  <div class="notch"><span class="crystal" aria-hidden="true"></span></div>
+</div>
+</div>
+
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const root=$('root');
+  const PLAY='<path d="M8 5v14l11-7z"/>', PAUSE='<path d="M6 5h4v14H6zm8 0h4v14h-4z"/>';
+  const SOUND='<path d="M3 9v6h4l5 5V4L7 9zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4z"/>';
+  const MUTED='<path d="M3 9v6h4l5 5V4L7 9zm16.6 3 2.1-2.1-1.4-1.4-2.1 2.1-2.1-2.1-1.4 1.4 2.1 2.1-2.1 2.1 1.4 1.4 2.1-2.1 2.1 2.1 1.4-1.4z"/>';
+
+
+  // inline player
+  const v=$('inlineVid'); let userPaused=false, ended=false;
+  const setPlayIcon=()=>{$('inlinePlayIcon').innerHTML=v.paused?PLAY:PAUSE;$('inlinePlay').setAttribute('aria-label',v.paused?'הפעלה':'השהיה')};
+  v.addEventListener('play',setPlayIcon);v.addEventListener('pause',setPlayIcon);
+  v.addEventListener('timeupdate',()=>{$('inlineBar').style.width=(v.currentTime/v.duration*100||0)+'%'});
+  v.addEventListener('ended',()=>{ended=true;$('inlineEnd').hidden=false;v.closest('.stage').classList.add('done')});
+  $('inlinePlay').onclick=()=>{ if(v.paused){userPaused=false;v.play().catch(()=>{})} else {userPaused=true;v.pause()} };
+  $('inlineReplay').onclick=()=>{ended=false;$('inlineEnd').hidden=true;v.closest('.stage').classList.remove('done');v.currentTime=0;v.play().catch(()=>{})};
+  $('inlineSound').onclick=()=>{v.muted=!v.muted;$('inlineSound').textContent=v.muted?'🔇 הפעלת סאונד':'🔊 סאונד פועל';if(v.paused&&!ended)v.play().catch(()=>{})};
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(es=>es.forEach(e=>{
+      if(e.isIntersecting&&e.intersectionRatio>=.5){ if(!userPaused&&!ended&&!reduce) v.play().catch(()=>{}) }
+      else if(!v.paused) v.pause();
+    }),{threshold:[0,.5]}).observe(v);
+  }
+
+  // story modal
+  const m=$('modal'), s=$('storyVid'); let lastFocus=null;
+  const setMute=()=>{$('storyMuteIcon').innerHTML=s.muted?MUTED:SOUND;$('storyMute').setAttribute('aria-label',s.muted?'הפעלת סאונד':'השתקה')};
+  function openStory(from){
+    lastFocus=document.activeElement; v.pause();
+    s.currentTime=(from==='inline'&&!ended)?v.currentTime:0;
+    s.muted=false; setMute(); m.hidden=false; document.body.style.overflow='hidden';
+    s.play().catch(()=>{s.muted=true;setMute();s.play().catch(()=>{})});
+    $('storyClose').focus();
+  }
+  function closeStory(){ s.pause(); m.hidden=true; document.body.style.overflow=''; if(lastFocus) lastFocus.focus(); }
+  s.addEventListener('timeupdate',()=>{$('storyBar').style.width=(s.currentTime/s.duration*100||0)+'%'});
+  s.addEventListener('click',()=>s.paused?s.play():s.pause());
+  $('storyMute').onclick=()=>{s.muted=!s.muted;setMute()};
+  $('storyClose').onclick=closeStory;
+  m.addEventListener('click',e=>{if(e.target===m)closeStory()});
+  $('inlineExpand').onclick=()=>openStory('inline');
+  v.addEventListener('click',()=>openStory('inline'));
+
+  // jump to Sol section
+  $('toSol').addEventListener('click',e=>{
+    e.preventDefault(); const sec=$('sol');
+    sec.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});
+    sec.classList.remove('arrived'); setTimeout(()=>sec.classList.add('arrived'),500); setTimeout(()=>sec.classList.remove('arrived'),2600);
+  });
+
+  // Sol panel
+  const inner=$('spInner'), body=$('spBody'), input=$('spInput'), panel=$('solPanel');
+  const REPLIES={
+    'יוון':{t:'יש לי כמה מקומות שיכולים להתאים לכם. תראו מה מצאתי!',cards:[
+      {img:'url(h-astarte.jpg)',tag:'מלון',name:'Astarte Suites',loc:'פירה, סנטוריני'},
+      {img:'url(h-cruise.jpg)',tag:'חוויה',name:'שייט שקיעה בקלדרה',loc:'קלדרה, סנטוריני'},
+      {img:'url(h-oia.jpg)',tag:'אטרקציה',name:'הכפר אויה',loc:'סנטוריני, יוון'}]},
+    'כריסמס':{t:'שווקי הכריסמס בווינה פתוחים מאמצע נובמבר. הנה כמה רעיונות לסופ״ש:',cards:[
+      {img:'linear-gradient(160deg,#7F1D1D,#F59E0B)',tag:'מלון',name:'Hotel Sacher Wien',loc:'מרכז העיר, וינה'},
+      {img:'linear-gradient(160deg,#14532D,#B91C1C)',tag:'אטרקציה',name:'שוק הכריסמס ברתהאוס',loc:'רתהאוספלאץ, וינה'},
+      {img:'linear-gradient(160deg,#1E3A8A,#A78BFA)',tag:'חוויה',name:'קונצרט ואלסים',loc:'קורסלון, וינה'}]},
+    'משפחתי':{t:'מצאתי מלונות משפחתיים צמודים לים בכרתים, עם בריכות ומועדון ילדים:',cards:[
+      {img:'linear-gradient(160deg,#0EA5E9,#1B5ECE)',tag:'מלון',name:'Aldemar Knossos Royal',loc:'חרסוניסוס, כרתים'},
+      {img:'linear-gradient(160deg,#06B6D4,#22C55E)',tag:'מלון',name:'Creta Maris Resort',loc:'חרסוניסוס, כרתים'},
+      {img:'linear-gradient(160deg,#F59E0B,#EF4444)',tag:'אטרקציה',name:'פארק המים Acqua Plus',loc:'חרסוניסוס, כרתים'}]}
+  };
+  const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  function emptyState(){inner.innerHTML='<div class="sp-empty"><img src="flyai-logo.png" alt=""><b>היי, אני סול, סוכנת ה-AI האישית שלך.</b><span>אני יכולה לעזור לך למצוא מלון שמתאים לחופשה שלך, בהתאם למה שחשוב לך.</span></div>'}
+  function addMsg(who,html){
+    const e=inner.querySelector('.sp-empty'); if(e) e.remove();
+    const d=document.createElement('div'); d.className='msg '+who;
+    d.innerHTML=(who==='me'?'<span class="avatar">AG</span>':'<span class="avatar"><img src="flyai-logo.png" alt=""></span>')+'<div class="bub">'+html+'</div>';
+    inner.appendChild(d); body.scrollTop=body.scrollHeight; return d;
+  }
+  function ask(q){
+    addMsg('me',esc(q));
+    const t=addMsg('ai','<span class="typing" aria-label="סול כותבת"><i></i><i></i><i></i></span>');
+    const key=Object.keys(REPLIES).find(k=>q.includes(k));
+    setTimeout(()=>{
+      if(key){
+        const r=REPLIES[key]; t.querySelector('.bub').textContent=r.t;
+        const g=document.createElement('div'); g.className='results';
+        g.innerHTML=r.cards.map(c=>'<article class="res"><div class="ph" style="background-image:'+c.img+'"><span class="tag">'+c.tag+'</span></div><div class="rt"><b>'+c.name+'</b><span>'+c.loc+'</span></div></article>').join('');
+        inner.appendChild(g);
+      } else t.querySelector('.bub').textContent='בשמחה! לאילו תאריכים ולכמה אנשים לחפש?';
+      body.scrollTop=body.scrollHeight;
+    },1300);
+  }
+  let solLast=null;
+  function openSol(q){
+    if(!m.hidden) closeStory();
+    v.pause(); solLast=document.activeElement;
+    emptyState(); input.value=''; syncSend();
+    root.classList.add('sol-open'); panel.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+    setTimeout(()=>{ if(q) ask(q); else input.focus(); },reduce?0:450);
+  }
+  function closeSol(){ root.classList.remove('sol-open'); panel.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if(solLast) solLast.focus(); }
+  const syncSend=()=>$('spSend').classList.toggle('ready',input.value.trim().length>0);
+  input.addEventListener('input',syncSend);
+  $('spForm').addEventListener('submit',e=>{e.preventDefault(); const q=input.value.trim(); if(!q) return; input.value=''; syncSend(); ask(q)});
+  $('solClose').onclick=closeSol; $('solBackdrop').onclick=closeSol;
+  document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>openSol(b.dataset.q)));
+  document.addEventListener('keydown',e=>{ if(e.key!=='Escape') return; if(!m.hidden) closeStory(); else if(root.classList.contains('sol-open')) closeSol(); });
+
+})();
+</script>
+
+</body>
+</html>
